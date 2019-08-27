@@ -1,4 +1,4 @@
-# Citrix ADX BLX
+# Citrix ADC BLX
 These are Terraform modules that deploys [Citrix ADC BLX apppliance](https://docs.citrix.com/en-us/citrix-adc-blx/13/introduction-blx.html) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).  They are developed jointly by Oracle and Citrix.
 
 * [simple](simple) contains Terraform resources for deploying ADC-BLX on Oracle Cloud Infrastructure via Terraform CLI.
