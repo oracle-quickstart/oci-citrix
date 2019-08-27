@@ -31,6 +31,7 @@ terraform init
 ```
 
 This gives the following output:
+
 ![](./images/tf-init.png)
 
 Next, we should modify our template variables accordingly to our OCI Tenancy.
@@ -56,7 +57,9 @@ Now we should run a plan to make sure everything looks good:
 ```
 terraform plan
 ```
+
 That gives:
+
 ![](./images/tf-plan.png)
 
 
