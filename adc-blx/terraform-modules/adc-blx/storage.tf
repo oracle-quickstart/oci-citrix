@@ -2,7 +2,6 @@ data "oci_objectstorage_namespace" "ns" {
   compartment_id = "${var.compartment_ocid}"
 }
 
-
 resource "oci_objectstorage_preauthrequest" "adc_blx_par" {
   namespace    = "${data.oci_objectstorage_namespace.ns.namespace}"
   bucket       = "${var.adc_blx_bucket_name}"
@@ -10,7 +9,6 @@ resource "oci_objectstorage_preauthrequest" "adc_blx_par" {
   name         = "adc-blx.tgz"
   access_type  = "ObjectRead"
   time_expires = "${timeadd(timestamp(), "10m")}"
-
 }
 
 locals {

@@ -9,7 +9,7 @@ provider "oci" {
 
 ## Creates a VCN with a public subnet
 module "vcn-plus-subnet" {
-  source = "../terraform-modules/vcn-plus-subnet-default"
+  source = "github.com/oracle/oci-quickstart-citrix/adc-blx/terraform-modules/vcn-plus-subnet-default"
 
   compartment_ocid = "${var.compartment_ocid}"
   vcn_display_name = "${var.vcn_display_name}"
@@ -22,9 +22,9 @@ module "vcn-plus-subnet" {
 }
 
 module "adc-blx" {
-  source              = "../terraform-modules/adc-blx"
+  source              = "github.com/oracle/oci-quickstart-citrix/adc-blx/terraform-modules/adc-blx"
   tenancy_ocid        = "${var.tenancy_ocid}"
-  region           = "${var.region}"
+  region              = "${var.region}"
   compartment_ocid    = "${var.compartment_ocid}"
   availability_domain = "${var.availability_domain}"
 
@@ -39,6 +39,6 @@ module "adc-blx" {
   adc_blx_bucket_name = "${var.adc_blx_bucket_name}"
   adc_blx_object_name = "${var.adc_blx_object_name}"
 
-  deployment_mode     = "${var.adc_blx_deployment_mode}"
-  assign_public_ip    = "${var.assign_public_ip}"
+  deployment_mode  = "${var.adc_blx_deployment_mode}"
+  assign_public_ip = "${var.assign_public_ip}"
 }

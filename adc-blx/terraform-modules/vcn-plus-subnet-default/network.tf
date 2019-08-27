@@ -25,17 +25,15 @@ resource "oci_core_route_table" "rt" {
   }
 }
 
-
 // extra inbound TCP traffic
 resource "oci_core_security_list" "sec_list_ingress_tcp_extra" {
-  count = "${length(var.ingress_tcp_ports)}"
+  count          = "${length(var.ingress_tcp_ports)}"
   compartment_id = "${var.compartment_ocid}"
   vcn_id         = "${oci_core_vcn.vcn.id}"
-  display_name   = "${format("%s-extra-tcp-ingress-%d", var.security_list_display_name, count.index + 1)}"  
-    
+  display_name   = "${format("%s-extra-tcp-ingress-%d", var.security_list_display_name, count.index + 1)}"
+
   ingress_security_rules {
-    
-    protocol  = "6"    
+    protocol  = "6"
     source    = "0.0.0.0/0"
     stateless = false
 
@@ -80,7 +78,6 @@ resource "oci_core_security_list" "sec_list" {
       max = 22
     }
   }
-
 
   // allow inbound icmp traffic of a specific type
   ingress_security_rules {

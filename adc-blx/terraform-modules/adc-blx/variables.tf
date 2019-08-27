@@ -13,6 +13,7 @@ variable "assign_public_ip" {
 
 variable "hostname_label" {}
 variable "image_id" {}
+
 // variable "install_package_url" {}
 variable "deployment_mode" {}
 

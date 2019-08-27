@@ -12,12 +12,12 @@ variable "ssh_public_key" {}
 
 # ADC BLX stored on Object storage (requires bucket and object names)
 variable "adc_blx_bucket_name" {
-    default = "my-bucket"
-}
-variable "adc_blx_object_name" {
-    default = "blx-13.0-36.27.tgz"
+  default = "my-bucket"
 }
 
+variable "adc_blx_object_name" {
+  default = "blx-13.0-36.27.tgz"
+}
 
 # deployment mode = shared or dedicated
 variable "adc_blx_deployment_mode" {
@@ -45,7 +45,6 @@ variable "assign_public_ip" {
 variable "hostname_label" {
   default = "adcblx"
 }
-
 
 variable "ingress_tcp_ports" {
   default = [9080, 9443]
