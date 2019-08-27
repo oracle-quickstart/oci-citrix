@@ -25,40 +25,26 @@ resource "oci_core_route_table" "rt" {
   }
 }
 
-// resource "oci_core_default_dhcp_options" "default_dhcp_options" {
-//   manage_default_resource_id = "${oci_core_vcn.vcn.default_dhcp_options_id}"
-//   display_name               = "defaultDhcpOptions"
 
-//   // required
-//   options {
-//     type        = "DomainNameServer"
-//     server_type = "VcnLocalPlusInternet"
-//   }
+// extra inbound TCP traffic
+resource "oci_core_security_list" "sec_list_ingress_tcp_extra" {
+  count = "${length(var.ingress_tcp_ports)}"
+  compartment_id = "${var.compartment_ocid}"
+  vcn_id         = "${oci_core_vcn.vcn.id}"
+  display_name   = "${format("%s-extra-tcp-ingress-%d", var.security_list_display_name, count.index + 1)}"  
+    
+  ingress_security_rules {
+    
+    protocol  = "6"    
+    source    = "0.0.0.0/0"
+    stateless = false
 
-//   // optional
-//   options {
-//     type                = "SearchDomain"
-//     search_domain_names = ["abc.com"]
-//   }
-// }
-
-// resource "oci_core_dhcp_options" "default_dhcp_options" {
-//   compartment_id = "${var.compartment_ocid}"
-//   vcn_id         = "${oci_core_vcn.vcn1.id}"
-//   display_name   = "dhcpOptions1"
-
-//   // required
-//   options {
-//     type        = "DomainNameServer"
-//     server_type = "VcnLocalPlusInternet"
-//   }
-
-//   // optional
-//   options {
-//     type                = "SearchDomain"
-//     search_domain_names = ["test123.com"]
-//   }
-// }
+    tcp_options {
+      min = "${var.ingress_tcp_ports[count.index]}"
+      max = "${var.ingress_tcp_ports[count.index]}"
+    }
+  }
+}
 
 resource "oci_core_security_list" "sec_list" {
   compartment_id = "${var.compartment_ocid}"
@@ -95,6 +81,7 @@ resource "oci_core_security_list" "sec_list" {
     }
   }
 
+
   // allow inbound icmp traffic of a specific type
   ingress_security_rules {
     protocol  = 1
@@ -114,7 +101,7 @@ resource "oci_core_subnet" "public_subnet" {
   cidr_block                 = "${var.subnet_cidr_block}"
   display_name               = "${var.subnet_display_name}"
   route_table_id             = "${oci_core_route_table.rt.id}"
-  security_list_ids          = ["${oci_core_security_list.sec_list.id}"]
+  security_list_ids          = ["${oci_core_security_list.sec_list.id}", "${oci_core_security_list.sec_list_ingress_tcp_extra.*.id}"]
   dns_label                  = "${var.subnet_dns_label}"
   prohibit_public_ip_on_vnic = "false"
 }

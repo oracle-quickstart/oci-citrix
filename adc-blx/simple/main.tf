@@ -18,10 +18,7 @@ module "vcn-plus-subnet" {
 
   subnet_cidr_block = "${var.subnet_cidr_block}"
 
-  //optional variables
-  // igw_display_name           = "${var.igw_display_name}"
-  // routetable_display_name    = "${var.routetable_display_name}"
-  // security_list_display_name = "${var.security_list_display_name}"
+  ingress_tcp_ports = "${var.ingress_tcp_ports}"
 }
 
 module "adc-blx" {

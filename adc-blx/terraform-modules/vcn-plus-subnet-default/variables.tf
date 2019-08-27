@@ -33,3 +33,7 @@ variable "subnet_dns_label" {
 variable "security_list_display_name" {
   default = "sec-list"
 }
+
+variable "ingress_tcp_ports" {
+  default = []
+}

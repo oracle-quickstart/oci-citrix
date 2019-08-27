@@ -46,6 +46,11 @@ variable "hostname_label" {
   default = "adcblx"
 }
 
+
+variable "ingress_tcp_ports" {
+  default = [9080, 9443]
+}
+
 variable "image_id" {
   type = "map"
 
