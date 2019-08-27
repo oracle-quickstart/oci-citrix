@@ -9,25 +9,34 @@ These are Terraform modules that deploys [Citrix ADC BLX apppliance](https://doc
 This repo is under active development.  Building open source software is a community effort.  We're excited to engage with the community building this.
 
 ## Prerequisites
-First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
-Customers are expected to download and store the tgz/RPM files in a bucket on OCI object storage, see specific instructions for your selected Deployment Target.
+
+First off we'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
+
+Citrix ADC BLX appliances run as a software application, [supported](https://docs.citrix.com/en-us/citrix-adc-blx/13/supported-linux-platforms-adc-features-blx.html) on different Linux distributions.
+We can run Citrix ADC BLX from a local Terraform CLI, OCI Resource Manager service or directly from the Marketplace Service on OCI.
+When running ADC BLX from local Terraform CLI, customers are expected to download and store the tgz/RPM files on their own bucket on [OCI Object Storage](https://docs.cloud.oracle.com/iaas/Content/Object/Concepts/objectstorageoverview.htm). Take notes on bucket and object names as they will be used further.
 
 ## Clone the Module
-Now, you'll want a local copy of this repo by running:
+
+Now, we'll want a local copy of this repo by running:
 
     git clone https://github.com/oracle/oci-quickstart-citrix.git
 
-## Select a Deployment Target
+## Deploy Simple from Terraform CLI
 
-Citrix ADC BLX appliances run as a software application, [supported](https://docs.citrix.com/en-us/citrix-adc-blx/13/supported-linux-platforms-adc-features-blx.html) on different Linux distributions.
-You can run Citrix ADC BLX from a local Terraform CLI, OCI Resource Manager service or directly from the Marketplace Service on OCI.
+The TF templates can be initialized by running the following commands:
+```
+cd oci-quickstart-citrix/adc-blx/simple
+terraform init
+```
 
-## Customize variables accordingly
+This gives the following output:
+![](./images/tf-init.png)
 
-Modify your template variables accordingly to your OCI Tenancy.
-You can use the boilerplate available on [terraform.tfvars.template](terraform.tfvars.template). After finishing, rename the file to `terraform.tfvars` and Terraform will automatically use it.
+Next, we should modify our template variables accordingly to our OCI Tenancy.
+We can use the boilerplate available on [terraform.tfvars.template](terraform.tfvars.template) to setup the OCI provider variables. Rename the file to `terraform.tfvars` so that Terraform CLI can automatically pick it up as the default variables configuration.
 
-You should also modify [variables.tf](./simple/variables.tf) file, updating at least the bucket and object name of the file you uploaded to OCI Object Storage:
+We should also modify [variables.tf](./simple/variables.tf), updating at least the bucket and object names where ADC BLX RPM files (.tgz) were stored:
 
 ```
 # ADC BLX stored on Object storage (requires bucket and object names)
@@ -40,39 +49,27 @@ variable "adc_blx_object_name" {
     default = "blx-13.0-36.27.tgz"
 }
 
-
-# deployment mode = shared or dedicated
-variable "adc_blx_deployment_mode" {
-  default = "shared"
-
-  #default = "dedicated"
-}
 ```
 
+Now we should run a plan to make sure everything looks good:
 
-## Deploy Simple from Terraform CLI
-
-The TF templates here can be deployed by running the following commands:
 ```
-cd oci-quickstart-citrix/adc-blx/simple
-terraform init
 terraform plan
+```
+That gives:
+![](./images/tf-plan.png)
+
+
+Finally, if everything is good, we can go ahead and apply:
+
+```
 terraform apply # will prompt to continue
 ```
 
+![](./images/tf-apply-prompt.png)
+
 The output of `terraform apply` should look like:
-```
-odule.adc-blx.oci_core_instance.vm: Still creating... (1m40s elapsed)
-module.adc-blx.oci_core_instance.vm: Still creating... (1m50s elapsed)
-module.adc-blx.oci_core_instance.vm: Creation complete after 1m57s (ID: ocid1.instance.oc1.iad.abuwcljsstaa4m5l...3go42fmsdozvni73syvoi5gqquw3ltya32ihvq)
 
-Apply complete! Resources: 2 added, 0 changed, 2 destroyed.
+![](./images/tf-apply-done.png)
 
-Outputs:
-
-adc_blx_private_ip = 10.0.1.2
-adc_blx_public_ip = AA.BB.CC.DD
-
-```
-
-You can now connect via SSH or HTTPS through the public IP address of ADX-BLX Virtual Machine.
+We now can connect via SSH or HTTPS through the public IP address of ADX-BLX Virtual Machine.
