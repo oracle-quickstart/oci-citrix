@@ -20,13 +20,13 @@ When running ADC BLX from local Terraform CLI, customers are expected to downloa
 
 Now, we'll want a local copy of this repo by running:
 
-    git clone https://github.com/oracle/oci-quickstart-citrix.git
+    git clone https://github.com/oracle-quickstart/oci-citrix.git
 
 ## Deploy Simple from Terraform CLI
 
 The TF templates can be initialized by running the following commands:
 ```
-cd oci-quickstart-citrix/adc-blx/simple
+cd oci-citrix/adc-blx/simple
 terraform init
 ```
 
